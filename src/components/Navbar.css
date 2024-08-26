@@ -1,0 +1,39 @@
+.navbar-container {
+    background-color: gray; 
+    display: flex;
+    justify-content:right;
+    color: #ffffff; 
+    padding: 1rem 2rem; 
+    
+  }
+  
+  .navbar-list {
+    background-color:black;
+     display: flex;  
+    justify-content: space-between;
+    padding-left: 0;
+    margin: 0;
+    list-style-type: none; 
+  }
+  
+  .navbar-item {
+    margin-right: 1rem;
+    margin-left: 1rem;
+    padding: 5px;
+  }
+  
+  .navbar-link {
+    color:white; 
+    display: flex;
+    flex-direction:row;
+    align-items:center;
+  }
+  
+  .navbar-link:hover {
+    color: lightgray; 
+  }
+  
+  .navbar-link.active {
+    color: #f1c40f; 
+  }
+  
