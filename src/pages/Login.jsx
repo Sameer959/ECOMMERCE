@@ -1,44 +1,85 @@
 import React, { useState } from 'react';
-import './Login.css'; 
+import Swal from 'sweetalert2';
+import { Container, TextField, Button, Typography, Box } from '@mui/material'; 
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginAsync, registerAsync } from '../Slices/authSlice'; 
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();  
+  const dispatch = useDispatch(); 
 
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    console.log('Login submitted with:', { email, password });
+    dispatch(loginAsync({ email, password }))
+      .unwrap()
+      .then(() => navigate('/Home'))
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: error.message || 'An unexpected error occurred.',
+          showConfirmButton: true,
+        });
+      });
+  };
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    dispatch(registerAsync({ email, password }))
+      .unwrap()
+      .then(() => navigate('/Home'))
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: error.message || 'An unexpected error occurred.',
+          showConfirmButton: true,
+        });
+      });
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="input-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="btn">Login</button>
-        </form>
-      </div>
-    </div>
+    <Container maxWidth="xs">
+      <Box component="form" sx={{ mt: 4 }}>
+        <Typography variant="h5" gutterBottom>
+          Login 
+        </Typography>
+        <TextField
+          fullWidth
+          margin="normal"
+          id="email"
+          type="email"
+          name="email"
+          label="Email"
+          variant="outlined"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          fullWidth
+          margin="normal"
+          id="password"
+          type="password"
+          name="password"
+          label="Password"
+          variant="outlined"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+          <Button variant="contained" color="primary" type="submit" onClick={handleLogin}>
+            Login
+          </Button>
+          <Button variant="outlined" color="secondary" type="submit" onClick={handleRegister}>
+            Register
+          </Button>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 
